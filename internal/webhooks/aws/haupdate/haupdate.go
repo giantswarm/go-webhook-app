@@ -1,4 +1,4 @@
-package aws
+package haupdate
 
 import (
 	"context"
@@ -11,7 +11,7 @@ type HAUpdater interface {
 	HAUpdate(ctx context.Context, obj metav1.Object) error
 }
 
-// NewLabelHAUpdater returns a new marker that will mark with labels.
+// NewHAUpdater returns a new marker that will mark with labels.
 func NewHAUpdater(availabilityZones []string) HAUpdater {
 	return haupdater{availabilityZones: availabilityZones}
 }
