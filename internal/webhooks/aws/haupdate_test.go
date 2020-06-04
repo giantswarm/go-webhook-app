@@ -8,6 +8,8 @@ import (
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"github.com/giantswarm/go-webhook-app/webhooks/aws/haupdate"
 )
 
 func TestHAupdater(t *testing.T) {

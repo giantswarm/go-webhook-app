@@ -12,21 +12,21 @@ type HAUpdater interface {
 }
 
 // NewLabelHAUpdater returns a new marker that will mark with labels.
-func NewHAUpdater(marks map[string]string) HAUpdater {
-	return labelmarker{marks: marks}
+func NewHAUpdater(availabilityZones []string) HAUpdater {
+	return haupdater{availabilityZones: availabilityZones}
 }
 
-type labelmarker struct {
-	marks map[string]string
+type haupdater struct {
+	availabilityZones []string
 }
 
-func (l labelmarker) HAUpdate(_ context.Context, obj metav1.Object) error {
+func (l haupdater) HAUpdate(_ context.Context, obj metav1.Object) error {
 	labels := obj.GetLabels()
 	if labels == nil {
 		labels = map[string]string{}
 	}
 
-	for k, v := range l.marks {
+	for k, v := range l.availabilityZones {
 		labels[k] = v
 	}
 

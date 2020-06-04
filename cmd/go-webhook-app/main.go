@@ -7,6 +7,7 @@ import (
 	"net/http/pprof"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -15,7 +16,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 
-	"github.com/giantswarm/go-webhook-app/webhooks/aws/haupdate"
+	"github.com/giantswarm/go-webhook-app/internal/log"
+	"github.com/giantswarm/go-webhook-app/internal/webhooks/aws/haupdate"
 )
 
 var (
@@ -44,8 +46,8 @@ func runApp() error {
 	metricsRec := internalmetricsprometheus.NewRecorder(prometheus.DefaultRegisterer)
 
 	var haupdater haupdate.HAUpdater
-	if len(cfg.LabelMarks) > 0 {
-		haupdater = haupdater.NewHAUpdater(cfg.LabelMarks)
+	if cfg.EnableHAUpdater {
+		haupdater = haupdater.NewHAUpdater(strings.Split(cfg.EnableHAUpdaterAZ, ","))
 		logger.Infof("haupdater webhook enabled")
 	} else {
 		haupdater = haupdater.DummyHAUpdater
